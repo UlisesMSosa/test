@@ -1,4 +1,4 @@
-import { ANCHO, ALTO, ESTADO_MENU, ESTADO_INTERMISION1, ESTADO_INTERMISION2, ESTADO_INTERMISION3, ESTADO_INTERMISION4, ESTADO_INTERMISION_MEJORA, ESTADO_INTERMISION_PAUSA, ESTADO_JUGANDO, ESTADO_REPORTE, ESTADO_PUNTAJES, ESTADO_ALBUM_PUNTAJES, ESTADO_FELICITACION, FOTOS_INICIALES, OBJETIVOS_POR_NIVEL } from './constants.js';
+import { ANCHO, ALTO, ESTADO_MENU, ESTADO_INTERMISION1, ESTADO_INTERMISION2, ESTADO_INTERMISION3, ESTADO_INTERMISION4, ESTADO_INTERMISION_MEJORA, ESTADO_INTERMISION_PAUSA, ESTADO_JUGANDO, ESTADO_REPORTE, ESTADO_PUNTAJES, ESTADO_ALBUM_PUNTAJES, ESTADO_FELICITACION, FOTOS_INICIALES, OBJETIVOS_POR_NIVEL, MAX_NOMBRE } from './constants.js';
 import { ASTROS_DATA } from './data.js';
 import { AudioManager } from './audio.js';
 import { InputManager } from './input.js';
@@ -269,15 +269,23 @@ export class Game {
       this.render();
       this.input.clearJustPressed();
       this.input.clearMouseClick();
+      this.input.clearTouchAction();
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
   }
 
   update(dt) {
+    if (this.input.consumeTouchAction()) {
+      this.input._justPressed['Space'] = true;
+    }
+    if (this.input.consumeTouchBack()) {
+      this.input._justPressed['Escape'] = true;
+    }
     if (this.state && this.states[this.state]) {
       this.states[this.state].update(dt);
     }
+    this._syncNameInput();
     this.actualizarMusica();
   }
 
@@ -286,6 +294,60 @@ export class Game {
     ctx.clearRect(0, 0, ANCHO, ALTO);
     if (this.state && this.states[this.state]) {
       this.states[this.state].render(ctx);
+    }
+    this._updateTouchControls();
+  }
+
+  _updateTouchControls() {
+    const tc = document.getElementById('touch-controls');
+    if (!tc || !this.input.isTouchDevice) {
+      if (tc) tc.classList.remove('show');
+      return;
+    }
+    const st = this.estadoActual;
+    const showJoystick = st === ESTADO_JUGANDO;
+    const showAction = st !== null;
+    const showBack = st !== ESTADO_MENU && st !== null;
+
+    tc.classList.toggle('show', showJoystick || showAction || showBack);
+    document.getElementById('joystick-area').style.display = showJoystick ? 'block' : 'none';
+    document.getElementById('action-btn').classList.toggle('hidden', !showAction);
+    document.getElementById('back-btn').classList.toggle('hidden', !showBack);
+
+    const knob = document.getElementById('joystick-knob');
+    if (knob) {
+      if (this.input.joystickActive) {
+        const maxDist = 35;
+        knob.style.left = `calc(50% + ${this.input.joystickX * maxDist}px)`;
+        knob.style.top = `calc(50% + ${this.input.joystickY * maxDist}px)`;
+      } else {
+        knob.style.left = '50%';
+        knob.style.top = '50%';
+      }
+    }
+    document.getElementById('action-btn').classList.toggle('pressed', !!this.input._touchActionPressed);
+  }
+
+  _syncNameInput() {
+    const ni = document.getElementById('name-input');
+    if (!ni) return;
+    if (this.estadoActual === ESTADO_MENU && this.input.isTouchDevice) {
+      ni.style.display = 'block';
+      const rect = this.canvas.getBoundingClientRect();
+      const sx = rect.width / ANCHO;
+      const sy = rect.height / ALTO;
+      const charW = 60, gap = 18;
+      const totalW = MAX_NOMBRE * charW + (MAX_NOMBRE - 1) * gap;
+      const inputX = rect.left + (rect.width - totalW * sx) / 2;
+      const centerY = ALTO / 2 + 70;
+      const inputY = rect.top + (centerY - 35) * sy;
+      ni.style.left = `${inputX}px`;
+      ni.style.top = `${inputY}px`;
+      ni.style.width = `${totalW * sx}px`;
+      ni.style.height = `${70 * sy}px`;
+      ni.style.fontSize = `${50 * Math.min(sx, sy)}px`;
+    } else {
+      ni.style.display = 'none';
     }
   }
 }

@@ -54,6 +54,10 @@ export class Camera {
     if (input.isDown('ArrowRight') || input.isDown('KeyD')) this.x += this.velocidad;
     if (input.isDown('ArrowUp') || input.isDown('KeyW')) this.y -= this.velocidad;
     if (input.isDown('ArrowDown') || input.isDown('KeyS')) this.y += this.velocidad;
+    if (input.joystickActive) {
+      this.x += input.joystickX * this.velocidad * 2;
+      this.y += input.joystickY * this.velocidad * 2;
+    }
     this._controlarBordes();
     this._updateCenter();
   }

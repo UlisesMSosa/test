@@ -1,4 +1,4 @@
-import { ANCHO, ALTO, ESTADO_MENU } from './constants.js';
+import { ANCHO, ALTO, ESTADO_MENU, MAX_NOMBRE } from './constants.js';
 import { Game } from './game.js';
 import { Camera } from './camera.js';
 
@@ -67,6 +67,20 @@ async function init() {
 
   game.initStates();
   game.estadoActual = ESTADO_MENU;
+
+  const nameInput = document.getElementById('name-input');
+  if (nameInput) {
+    nameInput.addEventListener('input', () => {
+      game.nombreJugador = nameInput.value.toUpperCase().slice(0, MAX_NOMBRE);
+      game.nombreErroneo = game.scores.existeNombre(game.nombreJugador);
+    });
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === 'Done') {
+        nameInput.blur();
+        game.input._justPressed['Space'] = true;
+      }
+    });
+  }
 
   bar.style.width = '100%';
   text.textContent = 'Listo!';
