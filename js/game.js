@@ -340,12 +340,12 @@ export class Game {
       const totalW = MAX_NOMBRE * charW + (MAX_NOMBRE - 1) * gap;
       const inputX = rect.left + (rect.width - totalW * sx) / 2;
       const centerY = ALTO / 2 + 70;
-      const inputY = rect.top + (centerY - 35) * sy;
+      const inputY = rect.top + (centerY - 42) * sy;
       ni.style.left = `${inputX}px`;
       ni.style.top = `${inputY}px`;
       ni.style.width = `${totalW * sx}px`;
-      ni.style.height = `${70 * sy}px`;
-      ni.style.fontSize = `${50 * Math.min(sx, sy)}px`;
+      ni.style.height = `${84 * sy}px`;
+      ni.style.fontSize = `${60 * Math.min(sx, sy)}px`;
     } else {
       ni.style.display = 'none';
     }

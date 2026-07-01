@@ -35,5 +35,4 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 #fullscreen-btn.exit::after { content: '⤡'; font-size: 26px; }
 #fullscreen-btn.pressed { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.5); }
 
-#name-input { position: fixed; z-index: 20; display: none; background: transparent; border: none; outline: none; color: #ffd700; font-family: Silkscreen, monospace; text-align: center; caret-color: rgba(150,50,200,0.8); pointer-events: auto; touch-action: none; }
-#name-input::placeholder { color: transparent; }
+#name-input { position: fixed; z-index: 20; display: none; background: transparent; border: none; outline: none; color: transparent; font-family: Silkscreen, monospace; text-align: center; caret-color: transparent; pointer-events: auto; touch-action: none; }

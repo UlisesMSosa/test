@@ -94,18 +94,64 @@ export class MenuState {
     const pulse = 0.5 + 0.5 * Math.sin(g.ticks / 150);
 
     ctx.save();
+
+    if (g.input.isTouchDevice) {
+      const fieldX = startX - 20;
+      const fieldY = centerY - 42;
+      const fieldW = totalW + 40;
+      const fieldH = 84;
+      const glow = 0.2 + 0.3 * Math.sin(g.ticks / 200);
+      ctx.save();
+      ctx.shadowColor = '#9632c8';
+      ctx.shadowBlur = 25 * glow;
+      ctx.fillStyle = 'rgba(10, 5, 30, 0.6)';
+      roundRect(ctx, fieldX, fieldY, fieldW, fieldH, 14);
+      ctx.fill();
+      ctx.restore();
+      const borderAlpha = 0.3 + 0.7 * pulse;
+      ctx.strokeStyle = `rgba(150, 50, 200, ${borderAlpha})`;
+      ctx.lineWidth = 2.5;
+      roundRect(ctx, fieldX, fieldY, fieldW, fieldH, 14);
+      ctx.stroke();
+    }
+
     ctx.font = '60px Silkscreen';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+
+    if (g.input.isTouchDevice && g.nombreJugador.length === 0) {
+      const phPulse = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(g.ticks / 300));
+      ctx.save();
+      ctx.globalAlpha = phPulse;
+      ctx.font = '40px Silkscreen';
+      ctx.fillStyle = '#aaa';
+      ctx.fillText('TOQUE AQUÍ', ANCHO / 2, centerY);
+      ctx.restore();
+    }
+
     for (let i = 0; i < MAX_NOMBRE; i++) {
       const x = startX + i * (charW + gap) + charW / 2;
-      ctx.fillStyle = `rgba(150, 50, 200, ${80 + 175 * pulse})`;
-      ctx.fillText('_', x, centerY);
-      if (i < g.nombreJugador.length && !g.input.isTouchDevice) {
+      if (!g.input.isTouchDevice) {
+        ctx.fillStyle = `rgba(150, 50, 200, ${80 + 175 * pulse})`;
+        ctx.fillText('_', x, centerY);
+      }
+      if (i < g.nombreJugador.length) {
         ctx.fillStyle = '#ffd700';
         ctx.fillText(g.nombreJugador[i], x, centerY - 6);
       }
     }
+
+    if (g.input.isTouchDevice && g.nombreJugador.length < MAX_NOMBRE) {
+      const caretVis = Math.sin(g.ticks / 200) > 0;
+      if (caretVis) {
+        const ci = Math.min(g.nombreJugador.length, MAX_NOMBRE - 1);
+        const cx = startX + ci * (charW + gap) + charW / 2;
+        ctx.fillStyle = '#ffd700';
+        ctx.font = '60px Silkscreen';
+        ctx.fillText('|', cx, centerY);
+      }
+    }
+
     ctx.restore();
 
     const pulse2 = 1.0 + 0.04 * Math.sin(t * 3.0);
