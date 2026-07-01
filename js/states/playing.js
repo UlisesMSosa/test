@@ -36,6 +36,10 @@ export class PlayingState {
         cam.tiempoFoto = g.ticks;
         cam.textoFoto = 'MAL';
         cam.colorTextoFoto = '#f00';
+        if (g.fotos <= 0) {
+          g.tiempoPausado = true;
+          g.tipoPausa = 'fotos';
+        }
         return;
       }
       // El "centro del visor" para elegir el astro más cercano y decidir

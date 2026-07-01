@@ -171,7 +171,6 @@ export class ReporteState {
       for (const a of g.album) g.sesionAstrosDescubiertos.add(a.nombre);
       for (const a of g.coleccion) g.sesionAstrosDescubiertos.add(a.nombre);
       g._guardarSesion();
-      g.scores.agregarNombre(g.nombreJugador);
       g._resetearPartidaCompleta();
       g.estadoActual = ESTADO_MENU;
     }
@@ -209,7 +208,6 @@ export class ReporteState {
         }
         for (const a of g.album) g.sesionAstrosDescubiertos.add(a.nombre);
         for (const a of g.coleccion) g.sesionAstrosDescubiertos.add(a.nombre);
-        g.scores.agregarNombre(g.nombreJugador);
         g.audio.play('felicitaciones');
         g.estadoActual = ESTADO_FELICITACION;
         return;

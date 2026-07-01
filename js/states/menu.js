@@ -39,7 +39,7 @@ export class MenuState {
     }
     if (input.justPressed('Space') || input.justPressed('Enter')) {
       if (g.audio.ctx && g.audio.ctx.state === 'suspended') g.audio.ctx.resume();
-      if (g.nombreJugador && !g.scores.existeNombre(g.nombreJugador)) {
+      if (g.nombreJugador) {
         g.astrosGrupo = [];
         g.puntuacion = 0;
         g.puntuacionTotalPartida = 0;
@@ -53,18 +53,14 @@ export class MenuState {
         g.tiempoInicio.intermision1 = g.ticks;
         g.estadoActual = ESTADO_INTERMISION1;
         return;
-      } else if (g.nombreJugador) {
-        g.nombreErroneo = true;
       }
     }
     if (input.justPressed('Backspace')) {
       g.nombreJugador = g.nombreJugador.slice(0, -1);
-      g.nombreErroneo = false;
     }
     const char = input.consumeTypedChar();
     if (char && g.nombreJugador.length < MAX_NOMBRE) {
       g.nombreJugador += char;
-      g.nombreErroneo = g.scores.existeNombre(g.nombreJugador);
     }
   }
 
@@ -140,16 +136,6 @@ export class MenuState {
 
     g._botonSalirRect = this._drawBtn(ctx, 'SALIR (ESC)', floatY, ANCHO - 20, g.input.mousePos, g.ticks, '#63cfc2', '#000', 'right');
     g._botonPuntajesRect = this._drawBtn(ctx, 'PUNTAJES', floatY, 20, g.input.mousePos, g.ticks, '#63cfc2', '#000', 'left');
-
-    if (g.nombreErroneo) {
-      ctx.save();
-      ctx.font = '50px Audiowide';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#f00';
-      ctx.fillText('YA EXISTE UN JUGADOR CON ESE NOMBRE', ANCHO / 2, ALTO - 130);
-      ctx.restore();
-    }
 
     ctx.save();
     ctx.font = '20px Silkscreen';

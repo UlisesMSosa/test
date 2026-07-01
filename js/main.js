@@ -72,7 +72,6 @@ async function init() {
   if (nameInput) {
     nameInput.addEventListener('input', () => {
       game.nombreJugador = nameInput.value.toUpperCase().slice(0, MAX_NOMBRE);
-      game.nombreErroneo = game.scores.existeNombre(game.nombreJugador);
     });
     nameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === 'Done') {

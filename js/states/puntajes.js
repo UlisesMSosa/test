@@ -104,15 +104,15 @@ export class PuntajesState {
     g._puntajesRects = [];
 
     for (let i = 0; i < jugadores.length; i++) {
-      const [nombre, datosJ] = jugadores[i];
+      const entry = jugadores[i];
       const y = yInicio + i * altoEntrada - g.scrollOffset;
       if (y + altoEntrada < yInicio || y > ALTO - 20) continue;
 
       const fontSize = i < 3 ? '30px Silkscreen' : '20px Silkscreen';
       ctx.font = fontSize;
       const rankStr = `${i + 1} - `;
-      const nomStr = nombre;
-      const ptsStr = `${datosJ.puntuacion_total} pts`;
+      const nomStr = entry.nombre;
+      const ptsStr = `${entry.puntuacion_total} pts`;
       const rankW = ctx.measureText(rankStr).width;
       const nomW = ctx.measureText(nomStr).width;
       const entryW = 60 + rankW + nomW + 20 + ctx.measureText(ptsStr).width;
@@ -120,7 +120,7 @@ export class PuntajesState {
       const entryR = { x: 60, y, w: entryW, h: parseInt(fontSize) };
       const hover = mousePos && entryR.x <= mousePos.x && mousePos.x <= entryR.x + entryR.w &&
                     entryR.y <= mousePos.y && mousePos.y <= entryR.y + entryR.h;
-      g._puntajesRects.push({ nombre, datos: datosJ, rect: entryR });
+      g._puntajesRects.push({ nombre: entry.nombre, datos: entry, rect: entryR });
 
       const color = hover ? '#9630c8' : '#ffd700';
       ctx.fillStyle = color;
@@ -132,7 +132,7 @@ export class PuntajesState {
 
       ctx.font = '20px Silkscreen';
       ctx.fillStyle = '#9630c8';
-      const info = `Nivel max: ${datosJ.nivel_maximo}  |  Astros: ${(datosJ.astros_descubiertos || []).length}  |  Partidas: ${datosJ.cantidad_partidas}`;
+      const info = `Nivel max: ${entry.nivel_maximo}  |  Astros: ${(entry.astros_descubiertos || []).length}`;
       ctx.fillText(info, 60, y + (i < 3 ? 35 : 20));
     }
 

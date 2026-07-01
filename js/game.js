@@ -48,7 +48,6 @@ export class Game {
     this.objetivoNivel5Inicial = 0;
 
     this.nombreJugador = '';
-    this.nombreErroneo = false;
     this.tiempoPausado = false;
     this.tipoPausa = '';
     this.ticksInicioJuego = 0;
