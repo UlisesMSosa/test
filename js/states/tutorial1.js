@@ -38,6 +38,7 @@ export class Tutorial1State {
       g.camara.render(ctx, g.ticks, false);
     }
 
+    const movil = g.input.isTouchDevice;
     ctx.save();
     ctx.font = '30px Silkscreen';
     ctx.textAlign = 'center';
@@ -46,16 +47,37 @@ export class Tutorial1State {
     ctx.fillStyle = '#fff';
     ctx.fillText('MUEVE LA CÁMARA Y ENCUENTRA LOS PLANETAS', ancla.x, ancla.y - 80);
 
-    const teclas = [
-      { key: 'arrow_up', offX: 0, offY: -50 },
-      { key: 'arrow_down', offX: 0, offY: 0 },
-      { key: 'arrow_left', offX: -50, offY: 0 },
-      { key: 'arrow_right', offX: 50, offY: 0 },
-    ];
-    for (const t of teclas) {
-      const img = g.assets.getImg(t.key);
-      if (img) {
-        ctx.drawImage(img, ancla.x + t.offX - img.width / 2, ancla.y + t.offY - img.height / 2);
+    if (movil) {
+      const jx = ancla.x, jy = ancla.y, r = 48, kr = 18;
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(jx, jy, r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.beginPath();
+      ctx.arc(jx + 12, jy - 8, kr, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(jx + 12, jy - 8, kr, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.font = '18px Silkscreen';
+      ctx.fillStyle = '#bbb';
+      ctx.fillText('Mueve el joystick', ancla.x, ancla.y + r + 24);
+    } else {
+      const teclas = [
+        { key: 'arrow_up', offX: 0, offY: -50 },
+        { key: 'arrow_down', offX: 0, offY: 0 },
+        { key: 'arrow_left', offX: -50, offY: 0 },
+        { key: 'arrow_right', offX: 50, offY: 0 },
+      ];
+      for (const t of teclas) {
+        const img = g.assets.getImg(t.key);
+        if (img) {
+          ctx.drawImage(img, ancla.x + t.offX - img.width / 2, ancla.y + t.offY - img.height / 2);
+        }
       }
     }
     ctx.restore();

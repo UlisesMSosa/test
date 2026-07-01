@@ -219,7 +219,18 @@ export class FelicitacionState {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#b4b4b4';
-    ctx.fillText('ESPACIO = Jugar de nuevo   |   M = Menú', ANCHO / 2, ALTO - 30);
+    if (g.input.isTouchDevice) {
+      const camImg = g.assets.getImg('camara');
+      const txt = '= Jugar de nuevo   |   X = Menú';
+      const cw = camImg ? 22 : 0;
+      const totalW = cw + ctx.measureText(txt).width;
+      const sx = ANCHO / 2 - totalW / 2;
+      ctx.textAlign = 'left';
+      if (camImg) ctx.drawImage(camImg, sx, ALTO - 30 - 11, 22, 22);
+      ctx.fillText(txt, sx + cw + 3, ALTO - 30);
+    } else {
+      ctx.fillText('ESPACIO = Jugar de nuevo   |   M = Menú', ANCHO / 2, ALTO - 30);
+    }
     ctx.restore();
   }
 

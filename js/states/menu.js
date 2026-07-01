@@ -120,7 +120,22 @@ export class MenuState {
     ctx.translate(ANCHO / 2, ALTO / 2 + 140);
     ctx.scale(pulse2, pulse2);
     ctx.fillStyle = '#f2840f';
-    ctx.fillText('PRESIONE ESPACIO PARA INICIAR', 0, 0);
+    if (g.input.isTouchDevice) {
+      const camImg = g.assets.getImg('camara');
+      const txt = 'TOQUE ';
+      const txt2 = ' PARA INICIAR';
+      const cw = camImg ? 50 : 0;
+      const t1w = ctx.measureText(txt).width;
+      const t2w = ctx.measureText(txt2).width;
+      const totalW = t1w + cw + t2w;
+      const sx = -totalW / 2;
+      ctx.textAlign = 'left';
+      ctx.fillText(txt, sx, 0);
+      if (camImg) ctx.drawImage(camImg, sx + t1w, -25, 50, 50);
+      ctx.fillText(txt2, sx + t1w + cw, 0);
+    } else {
+      ctx.fillText('PRESIONE ESPACIO PARA INICIAR', 0, 0);
+    }
     ctx.restore();
 
     g._botonSalirRect = this._drawBtn(ctx, 'SALIR (ESC)', floatY, ANCHO - 20, g.input.mousePos, g.ticks, '#63cfc2', '#000', 'right');

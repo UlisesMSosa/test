@@ -336,10 +336,14 @@ export class ReporteState {
     ctx.font = '20px Silkscreen';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
-    ctx.fillText('Volver al menu', 20, ALTO - 30);
-    const mImg = g.assets.getImg('key_m');
-    if (mImg) {
-      ctx.drawImage(mImg, 20 + ctx.measureText('Volver al menu').width + 10, ALTO - 45, 30, 30);
+    if (g.input.isTouchDevice) {
+      ctx.fillText('Toca ✕ para volver', 20, ALTO - 30);
+    } else {
+      ctx.fillText('Volver al menu', 20, ALTO - 30);
+      const mImg = g.assets.getImg('key_m');
+      if (mImg) {
+        ctx.drawImage(mImg, 20 + ctx.measureText('Volver al menu').width + 10, ALTO - 45, 30, 30);
+      }
     }
     ctx.restore();
 
@@ -516,6 +520,27 @@ export class ReporteState {
   }
 
   _dibujarConEspacio(ctx, g, accion) {
+    const movil = g.input.isTouchDevice;
+    if (movil) {
+      const text1 = 'Toca ';
+      const text2 = ` para ${accion}`;
+      const camImg = g.assets.getImg('camara');
+      const cw = camImg ? 44 : 0;
+      const ch = camImg ? 44 : 0;
+      const t1w = ctx.measureText(text1).width;
+      const t2w = ctx.measureText(text2).width;
+      const total = t1w + cw + t2w;
+      const sx = ANCHO / 2 - total / 2;
+      ctx.save();
+      ctx.textAlign = 'left';
+      ctx.fillText(text1, sx, 140);
+      if (camImg) {
+        ctx.drawImage(camImg, sx + t1w, 140 - ch / 2, cw, ch);
+      }
+      ctx.fillText(text2, sx + t1w + cw, 140);
+      ctx.restore();
+      return;
+    }
     const text1 = 'Presiona ';
     const text2 = ` para ${accion}`;
     const spaceImg = g.imgSpace || g.assets.getImg('space_key');

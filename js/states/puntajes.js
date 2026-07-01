@@ -87,7 +87,7 @@ export class PuntajesState {
     ctx.fillText('PUNTAJES', ANCHO / 2, 50);
     ctx.restore();
 
-    g._botonVolverRect = dibujarBotonConHover(ctx, 'VOLVER (M)', 50, ANCHO - 20 - 100, g.input.mousePos, g.ticks, '#63cfc2', '#000');
+    g._botonVolverRect = dibujarBotonConHover(ctx, g.input.isTouchDevice ? 'VOLVER (X)' : 'VOLVER (M)', 50, ANCHO - 20 - 100, g.input.mousePos, g.ticks, '#63cfc2', '#000');
 
     const yInicio = 110, altoEntrada = 80;
     const areaY = ALTO - yInicio - 20;

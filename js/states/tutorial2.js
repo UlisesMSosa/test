@@ -100,6 +100,7 @@ export class Tutorial2State {
 
     if (cam) cam.render(ctx, g.ticks, false);
 
+    const movil = g.input.isTouchDevice;
     const ancla = { x: ANCHO / 2, y: Math.floor(ALTO / 1.3) };
     ctx.save();
     ctx.font = '30px Silkscreen';
@@ -107,9 +108,16 @@ export class Tutorial2State {
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
     ctx.fillText('TOMA FOTOS DEL ESPACIO', ancla.x, ancla.y - 80);
-    const spaceImg = g.imgSpace || g.assets.getImg('space_key');
-    if (spaceImg) {
-      ctx.drawImage(spaceImg, ancla.x - spaceImg.width / 2, ancla.y - spaceImg.height / 2);
+    if (movil) {
+      const camImg = g.assets.getImg('camara');
+      if (camImg) {
+        ctx.drawImage(camImg, ancla.x - 40, ancla.y - 40, 80, 80);
+      }
+    } else {
+      const spaceImg = g.imgSpace || g.assets.getImg('space_key');
+      if (spaceImg) {
+        ctx.drawImage(spaceImg, ancla.x - spaceImg.width / 2, ancla.y - spaceImg.height / 2);
+      }
     }
     ctx.restore();
 

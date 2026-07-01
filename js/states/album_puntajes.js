@@ -143,7 +143,7 @@ export class AlbumPuntajesState {
     ctx.fillText(`Álbum de ${g.albumPuntajesClave}`, ANCHO / 2, 110);
     ctx.restore();
 
-    g._botonVolverRect = dibujarBoton(ctx, 'VOLVER (M)', 40, ANCHO - 20 - 100, '#63cfc2', '#000');
+    g._botonVolverRect = dibujarBoton(ctx, g.input.isTouchDevice ? 'VOLVER (X)' : 'VOLVER (M)', 40, ANCHO - 20 - 100, '#63cfc2', '#000');
 
     const uibookImg = g.assets.getImg('uibook');
     if (uibookImg) {
