@@ -30,6 +30,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 #back-btn::after { content: '✕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; color: rgba(255,50,50,0.6); }
 #back-btn.pressed { background: rgba(255,50,50,0.4); border-color: #ff3333; }
 #back-btn.hidden { display: none; }
+#fullscreen-btn { position: absolute; top: 72px; right: 16px; width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.25); touch-action: none; pointer-events: auto; display: flex; align-items: center; justify-content: center; font-size: 22px; color: rgba(255,255,255,0.5); transition: background 0.15s, border-color 0.15s; }
+#fullscreen-btn::after { content: '⛶'; }
+#fullscreen-btn.exit::after { content: '⤡'; font-size: 26px; }
+#fullscreen-btn.pressed { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.5); }
 
 #name-input { position: fixed; z-index: 20; display: none; background: transparent; border: none; outline: none; color: #ffd700; font-family: Silkscreen, monospace; text-align: center; caret-color: rgba(150,50,200,0.8); pointer-events: auto; touch-action: none; }
 #name-input::placeholder { color: transparent; }

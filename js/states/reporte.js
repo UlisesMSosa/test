@@ -349,7 +349,7 @@ export class ReporteState {
   }
 
   todasPegadas() {
-    return this.game.fotosRepInstancias.length > 0 && this.game.fotosRepInstancias.every(f => f.estado === 'pegada');
+    return this.game.fotosRepInstancias.length === 0 || this.game.fotosRepInstancias.every(f => f.estado === 'pegada');
   }
 
   _dibujarCabecera(ctx) {

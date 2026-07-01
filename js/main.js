@@ -106,6 +106,37 @@ async function init() {
     backBtn.addEventListener('touchcancel', clearBack);
   }
 
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+  if (fullscreenBtn) {
+    const fs = {
+      get element() { return document.fullscreenElement || document.webkitFullscreenElement; },
+      request() {
+        const el = document.documentElement;
+        return (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+      },
+      exit() { return (document.exitFullscreen || document.webkitExitFullscreen).call(document); },
+    };
+    const toggleFs = () => {
+      if (!fs.element) {
+        fs.request().then(() => fullscreenBtn.classList.add('exit')).catch(() => {});
+      } else {
+        fs.exit().then(() => fullscreenBtn.classList.remove('exit')).catch(() => {});
+      }
+    };
+    const onFsChange = () => { if (!fs.element) fullscreenBtn.classList.remove('exit'); };
+    fullscreenBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFs();
+    });
+    fullscreenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFs();
+    });
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+  }
+
   const joystickArea = document.getElementById('joystick-area');
   if (joystickArea) {
     let joyTouchId = null;
