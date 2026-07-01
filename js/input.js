@@ -70,12 +70,13 @@ export class InputManager {
     };
 
     canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
       for (const t of e.changedTouches) {
         const p = toLogical(t.clientX, t.clientY);
         this.mousePos = { x: p.x, y: p.y };
         this.mouseClick = { x: p.x, y: p.y, button: 0 };
       }
-    }, { passive: true });
+    }, { passive: false });
 
     canvas.addEventListener('touchmove', (e) => {
       e.preventDefault();
