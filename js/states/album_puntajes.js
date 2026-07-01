@@ -41,24 +41,18 @@ export class AlbumPuntajesState {
         return;
       }
 
-      for (const f of g.fotosAlbumPuntajes) {
-        if (f.estado === 'revelada') {
-          const fRect = { x: f.x - f.w / 2, y: f.y - f.h / 2, w: f.w, h: f.h };
-          if (click.x >= fRect.x && click.x <= fRect.x + fRect.w && click.y >= fRect.y && click.y <= fRect.y + fRect.h) {
-            f.pegar(g.audio, true);
-            return;
-          }
-        }
+      const revealedPhoto = g.fotosAlbumPuntajes.find(f => f.estado === 'revelada');
+      if (revealedPhoto) {
+        revealedPhoto.pegar(g.audio, true);
+        return;
       }
 
-      if (!g.fotosAlbumPuntajes.some(f => f.estado === 'revelada')) {
-        for (const f of g.fotosAlbumPuntajes) {
-          if (f.estado === 'pegada' && f.pagina === g.paginaActualAlbum) {
-            const fRect = { x: f.x - f.w / 2, y: f.y - f.h / 2, w: f.w, h: f.h };
-            if (click.x >= fRect.x && click.x <= fRect.x + fRect.w && click.y >= fRect.y && click.y <= fRect.y + fRect.h) {
-              f.revelarAmpliado();
-              return;
-            }
+      for (const f of g.fotosAlbumPuntajes) {
+        if (f.estado === 'pegada' && f.pagina === g.paginaActualAlbum) {
+          const fRect = { x: f.x - f.w / 2, y: f.y - f.h / 2, w: f.w, h: f.h };
+          if (click.x >= fRect.x && click.x <= fRect.x + fRect.w && click.y >= fRect.y && click.y <= fRect.y + fRect.h) {
+            f.revelarAmpliado();
+            return;
           }
         }
       }
